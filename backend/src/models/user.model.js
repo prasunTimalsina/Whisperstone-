@@ -27,11 +27,6 @@ const userSchema = new mongoose.Schema(
       maxlength: [100, "Password must not exceed 100 characters"],
       select: false, // You need to select this explicitly when querying if you want this field (password)
     },
-
-    profilePic: {
-      type: String,
-      default: "",
-    },
   },
   { timestamps: true }
 );

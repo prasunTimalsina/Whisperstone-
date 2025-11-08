@@ -1,9 +1,10 @@
 import express from "express";
-import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import path from "path";
 
 //Routes
 import authRoutes from "./routes/auth.route.js";
+import userRoutes from "./routes/user.route.js";
 import messageRoutes from "./routes/message.route.js";
 
 import { ENV } from "./lib/env.js";
@@ -16,8 +17,10 @@ const PORT = ENV.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/messages", messageRoutes);
 
 // Global Error Handler Middleware
