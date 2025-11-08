@@ -1,10 +1,11 @@
 import { Router } from "express";
+import { signup } from "../controllers/auth.controller.js";
+import { validateData } from "../middlewares/validation.middleware.js";
+import { userSchema } from "../schemas/userSchema.js";
 
 const router = Router();
 
-router.get("/signup", (req, res) => {
-  res.send("Signup route");
-});
+router.post("/signup", validateData(userSchema), signup);
 router.get("/login", (req, res) => {
   res.send("Login route");
 });

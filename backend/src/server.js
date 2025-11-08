@@ -2,20 +2,39 @@ import express from "express";
 import dotenv from "dotenv";
 import path from "path";
 
+//Routes
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
+
 import { ENV } from "./lib/env.js";
+import { connectDB } from "./lib/db.js";
 
 const __dirname = path.resolve();
 const app = express();
 
 const PORT = ENV.PORT || 3000;
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
-console.log(ENV.NODE_ENV === "production");
-console.log(ENV.PORT);
-// make ready for deployment
+
+// Global Error Handler Middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+
+  res.status(statusCode).json({
+    success: false,
+    message,
+    errors: err.errors || [],
+  });
+});
+
+// For production deployment
 if (ENV.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
@@ -26,4 +45,5 @@ if (ENV.NODE_ENV === "production") {
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  connectDB();
 });
