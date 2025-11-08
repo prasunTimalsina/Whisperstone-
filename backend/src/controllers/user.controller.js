@@ -1,5 +1,6 @@
 import { ENV } from "../lib/env.js";
 import User from "../models/user.model.js";
+import { ApiError } from "../utils/api-error.js";
 import { ApiResponse } from "../utils/api-response.js";
 import { asyncHandler } from "../utils/async-handler.js";
 
@@ -40,4 +41,17 @@ export const updateUser = asyncHandler(async (req, res) => {
 
   await user.save();
   res.status(200).json(new ApiResponse(200, "User updated successfully", user));
+});
+
+export const getAllUser = asyncHandler(async (req, res) => {
+  const loggedInUserId = req.user._id;
+  const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } });
+
+  if (!filteredUsers) {
+    throw new ApiError(404, "No users found");
+  }
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, "Users retrieved successfully", filteredUsers));
 });

@@ -18,7 +18,7 @@ export const authGuard = asyncHandler(async (req, res, next) => {
   }
 
   const user = await User.findById(decoded.userId);
-  console.log(user);
+
   if (!user) {
     throw new ApiError(401, "User not found");
   }

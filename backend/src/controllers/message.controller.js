@@ -1,0 +1,19 @@
+import Message from "../models/Message.model.js";
+import { ApiResponse } from "../utils/api-response.js";
+import { asyncHandler } from "../utils/async-handler.js";
+
+export const sendMessage = asyncHandler(async (req, res) => {
+  const senderId = req.user._id;
+
+  const { text } = req.body;
+
+  // Logic to send message
+  const newMessage = await new Message({ senderId, text });
+  if (!newMessage) {
+    throw new ApiError(400, "Failed to send message");
+  }
+  await newMessage.save();
+  res
+    .status(201)
+    .json(new ApiResponse(201, newMessage, "Message Created Sucessfuly"));
+});
