@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { login, logout, signup } from "../controllers/auth.controller.js";
+import {
+  getCurrentUser,
+  login,
+  logout,
+  signup,
+} from "../controllers/auth.controller.js";
 import { validateData } from "../middlewares/validation.middleware.js";
 import { loginSchema, userSchema } from "../schemas/userSchema.js";
 import { authGuard } from "../middlewares/auth.middleware.js";
@@ -10,5 +15,6 @@ router.post("/signup", validateData(userSchema), signup);
 router.post("/login", validateData(loginSchema), login);
 router.post("/logout", logout);
 router.put("/update-profile", authGuard);
+router.get("/get-me", authGuard, getCurrentUser);
 
 export default router;

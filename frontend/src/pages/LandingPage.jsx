@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { MessageCircle } from "lucide-react";
 
 const LandingPage = () => {
@@ -14,10 +14,16 @@ const LandingPage = () => {
             <h1 className="text-xl font-bold text-foreground">Whisper Stone</h1>
           </div>
           <div className="flex items-center gap-4">
-            <Link className="text-muted-foreground hover:text-foreground transition-colors">
+            <Link
+              to="/login"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
               Log in
             </Link>
-            <Link className="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors">
+            <Link
+              to="/signup"
+              className="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors"
+            >
               Sign up
             </Link>
           </div>
@@ -36,10 +42,16 @@ const LandingPage = () => {
               hear each other. Real-time conversations, connected community.
             </p>
             <div className="flex gap-4">
-              <Link className="px-8 py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors">
+              <Link
+                to="/signup"
+                className="px-8 py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors"
+              >
                 Get Started
               </Link>
-              <Link className="px-8 py-3 rounded-lg border border-border text-foreground font-semibold hover:bg-secondary transition-colors">
+              <Link
+                to="/login"
+                className="px-8 py-3 rounded-lg border border-border text-foreground font-semibold hover:bg-secondary transition-colors"
+              >
                 Log In
               </Link>
             </div>

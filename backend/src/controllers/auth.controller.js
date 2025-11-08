@@ -29,11 +29,15 @@ export const signup = asyncHandler(async (req, res) => {
     });
 
     res.status(201).json(
-      new ApiResponse(201, "User created successfully", {
-        _id: savedUser._id,
-        fullname: savedUser.fullname,
-        email: savedUser.email,
-      })
+      new ApiResponse(
+        201,
+        {
+          _id: savedUser._id,
+          fullname: savedUser.fullname,
+          email: savedUser.email,
+        },
+        "User created successfully"
+      )
     );
   } else {
     throw new ApiError(500, "Failed to create user");
@@ -61,15 +65,38 @@ export const login = asyncHandler(async (req, res) => {
   });
 
   res.status(200).json(
-    new ApiResponse(200, "Login successful", {
-      _id: user._id,
-      fullname: user.fullname,
-      email: user.email,
-    })
+    new ApiResponse(
+      200,
+      {
+        _id: user._id,
+        fullname: user.fullname,
+        email: user.email,
+      },
+      "Login successful"
+    )
   );
 });
 
 export const logout = asyncHandler(async (req, res) => {
   res.cookie("jwt", "", { maxAge: 0, httpOnly: true });
-  res.status(200).json(new ApiResponse(200, "Logout successful"));
+  res.status(200).json(new ApiResponse(200, {}, "Logout successful"));
+});
+
+export const getCurrentUser = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+  res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        _id: user._id,
+        fullname: user.fullname,
+        email: user.email,
+      },
+      "User fetched successfully"
+    )
+  );
 });
