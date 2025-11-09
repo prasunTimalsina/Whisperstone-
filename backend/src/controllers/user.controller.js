@@ -40,7 +40,7 @@ export const updateUser = asyncHandler(async (req, res) => {
   user.password = password || user.password;
 
   await user.save();
-  res.status(200).json(new ApiResponse(200, "User updated successfully", user));
+  res.status(200).json(new ApiResponse(200, user, "User updated successfully"));
 });
 
 export const getAllUser = asyncHandler(async (req, res) => {
@@ -53,5 +53,5 @@ export const getAllUser = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .json(new ApiResponse(200, "Users retrieved successfully", filteredUsers));
+    .json(new ApiResponse(200, filteredUsers, "Users retrieved successfully"));
 });

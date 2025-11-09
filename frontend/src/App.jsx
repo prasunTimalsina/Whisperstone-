@@ -5,8 +5,8 @@ import { useEffect } from "react";
 import ChatPage from "./pages/ChatPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
-import PageLoader from "./components/pageLoader";
 import { Toaster } from "react-hot-toast";
+import PageLoader from "./components/PageLoader";
 
 function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();

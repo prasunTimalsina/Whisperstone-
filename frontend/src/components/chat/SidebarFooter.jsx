@@ -1,8 +1,21 @@
+import { useAuthStore } from "@/store/useAuthStore";
 import { ChevronDown, LogOut, User } from "lucide-react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const SidebarFooter = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const { logout } = useAuthStore();
+
+  const handleLogout = async () => {
+    // Implement logout functionality here
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <div className="p-4 border-t border-zinc-800 relative">
       <button
@@ -28,7 +41,10 @@ const SidebarFooter = () => {
             <User className="w-4 h-4" />
             View Profile
           </a>
-          <button className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-400 hover:bg-zinc-700 rounded-b-lg transition-colors">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-400 hover:bg-zinc-700 rounded-b-lg transition-colors"
+          >
             <LogOut className="w-4 h-4" />
             Logout
           </button>
