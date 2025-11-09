@@ -1,5 +1,5 @@
 import { Eye, EyeOff, MessageCircle } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -12,6 +12,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 
 function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
   const { signup } = useAuthStore();
   const {
     register,
@@ -30,6 +31,8 @@ function SignUpPage() {
     };
     try {
       await signup(signupData);
+      // ✅ Navigate to chat after successful signup
+      navigate("/");
     } catch (error) {
       console.log("Error signing up", error);
     } finally {
