@@ -30,16 +30,26 @@ export const updateUser = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const { fullname, email, password } = req.body;
 
-  const user = await User.findById(userId);
+  const updateData = {};
+  
+  if (fullname) updateData.fullname = fullname;
+  if (email) updateData.email = email;
+  if (password) updateData.password = password;
+
+  const user = await User.findByIdAndUpdate(
+    userId,
+    updateData,
+    { 
+      new: true, 
+      runValidators: true,
+      select: "-password" // Exclude password from response
+    }
+  );
+
   if (!user) {
     throw new ApiError(404, "User not found");
   }
 
-  user.fullname = fullname || user.fullname;
-  user.email = email || user.email;
-  user.password = password || user.password;
-
-  await user.save();
   res.status(200).json(new ApiResponse(200, user, "User updated successfully"));
 });
 

@@ -14,7 +14,6 @@ const router = Router();
 router.post("/signup", validateData(userSchema), signup);
 router.post("/login", validateData(loginSchema), login);
 router.post("/logout", logout);
-router.put("/update-profile", authGuard);
 router.get("/get-me", authGuard, getCurrentUser);
 
 export default router;

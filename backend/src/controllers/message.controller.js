@@ -1,4 +1,4 @@
-import Message from "../models/Message.model.js";
+import Message from "../models/message.model.js";
 import { ApiResponse } from "../utils/api-response.js";
 import { asyncHandler } from "../utils/async-handler.js";
 import { io } from "../lib/socket.js";
