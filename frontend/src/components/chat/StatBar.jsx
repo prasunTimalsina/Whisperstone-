@@ -1,8 +1,10 @@
+import { useChatStore } from "@/store/useChatStore";
+
 const StatBar = () => {
-  // Mock data for stats
-  const totalMessages = 247;
-  const totalUsers = 12;
-  const onlineUsers = 8;
+  const { chats, allUsers } = useChatStore();
+  const totalMessages = chats.length;
+  const totalUsers = allUsers.length;
+
   return (
     <div className="px-6 py-3 flex gap-6 bg-zinc-800/50 border-t border-zinc-800">
       <div className="flex items-center gap-3">
@@ -23,9 +25,7 @@ const StatBar = () => {
         <span className="text-xs font-semibold text-zinc-400 uppercase">
           Online
         </span>
-        <span className="text-lg font-bold text-emerald-500">
-          {onlineUsers}
-        </span>
+        <span className="text-lg font-bold text-emerald-500">1</span>
       </div>
     </div>
   );

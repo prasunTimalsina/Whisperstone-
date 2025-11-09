@@ -1,11 +1,12 @@
+import { getInitials } from "@/lib/utils";
 import { useAuthStore } from "@/store/useAuthStore";
 import { ChevronDown, LogOut, User } from "lucide-react";
 import { useState } from "react";
-import toast from "react-hot-toast";
 
 const SidebarFooter = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const { logout } = useAuthStore();
+
+  const { authUser, logout } = useAuthStore();
 
   const handleLogout = async () => {
     // Implement logout functionality here
@@ -23,7 +24,7 @@ const SidebarFooter = () => {
         className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-800 transition-colors"
       >
         <div className="w-10 h-10 rounded-full bg-zinc-700 flex items-center justify-center border border-zinc-600 font-semibold text-white">
-          JD
+          {getInitials(authUser.fullname)}
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium text-white truncate">You</p>

@@ -12,12 +12,11 @@ const MainChatArea = () => {
             <p className="text-xs text-zinc-400">Broadcast messaging</p>
           </div>
         </div>
-
         {/* Stats Bar */}
         <StatBar />
-        <ChatBox />
-        <MessageInput />
       </div>
+      <ChatBox />
+      <MessageInput />
     </div>
   );
 };

@@ -17,3 +17,10 @@ export const sendMessage = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(201, newMessage, "Message Created Sucessfuly"));
 });
+
+export const getMessages = asyncHandler(async (req, res) => {
+  const messages = await Message.find().populate("senderId", "fullname email");
+  res
+    .status(200)
+    .json(new ApiResponse(200, messages, "Messages fetched successfully"));
+});

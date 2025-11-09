@@ -1,6 +1,14 @@
 import { getInitials } from "@/lib/utils";
+import { useChatStore } from "@/store/useChatStore";
+import { all } from "axios";
+import { useEffect } from "react";
 
 const UserList = () => {
+  const { allUsers, getAllUsers } = useChatStore();
+
+  useEffect(() => {
+    getAllUsers();
+  }, [getAllUsers]);
   const mockUsers = [
     { id: 1, name: "Alex Chen", status: "online" },
     { id: 2, name: "Jordan Smith", status: "online" },
@@ -18,24 +26,20 @@ const UserList = () => {
           Active Users
         </p>
         <div className="space-y-2 mb-6">
-          {mockUsers
-            .filter((u) => u.status !== "offline")
-            .map((user) => (
-              <button
-                key={user.id}
-                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-300 hover:bg-zinc-800 transition-colors"
-              >
-                <UserAvatar name={user.name} status={user.status} />
-                <div className="text-left flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white truncate">
-                    {user.name}
-                  </p>
-                  <p className="text-xs text-zinc-500 capitalize">
-                    {user.status}
-                  </p>
-                </div>
-              </button>
-            ))}
+          {allUsers.map((user) => (
+            <button
+              key={user._id}
+              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-300 hover:bg-zinc-800 transition-colors"
+            >
+              <UserAvatar name={user.fullname} status={"online"} />
+              <div className="text-left flex-1 min-w-0">
+                <p className="text-sm font-medium text-white truncate">
+                  {user.fullname}
+                </p>
+                <p className="text-xs text-zinc-500 capitalize">Online</p>
+              </div>
+            </button>
+          ))}
         </div>
 
         {/* Inactive Users */}
@@ -43,21 +47,19 @@ const UserList = () => {
           Inactive Users
         </p>
         <div className="space-y-2">
-          {mockUsers
+          {allUsers
             .filter((u) => u.status === "offline")
             .map((user) => (
               <button
-                key={user.id}
+                key={user._id}
                 className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-400 hover:bg-zinc-800 transition-colors"
               >
-                <UserAvatar name={user.name} status={user.status} />
+                <UserAvatar name={user.fullname} status={"offline"} />
                 <div className="text-left flex-1 min-w-0">
                   <p className="text-sm font-medium text-zinc-300 truncate">
-                    {user.name}
+                    {user.fullname}
                   </p>
-                  <p className="text-xs text-zinc-600 capitalize">
-                    {user.status}
-                  </p>
+                  <p className="text-xs text-zinc-600 capitalize">Offline</p>
                 </div>
               </button>
             ))}
