@@ -1,4 +1,5 @@
 import { ENV } from "../lib/env.js";
+import Message from "../models/message.model.js";
 import User from "../models/user.model.js";
 import { ApiError } from "../utils/api-error.js";
 import { ApiResponse } from "../utils/api-response.js";
@@ -31,20 +32,19 @@ export const updateUser = asyncHandler(async (req, res) => {
   const { fullname, email, password } = req.body;
 
   const updateData = {};
-  
+
   if (fullname) updateData.fullname = fullname;
   if (email) updateData.email = email;
   if (password) updateData.password = password;
 
-  const user = await User.findByIdAndUpdate(
-    userId,
-    updateData,
-    { 
-      new: true, 
-      runValidators: true,
-      select: "-password" // Exclude password from response
-    }
-  );
+  //delete chats of user
+  await Message.deleteMany({ senderId: userId });
+
+  const user = await User.findByIdAndUpdate(userId, updateData, {
+    new: true,
+    runValidators: true,
+    select: "-password", // Exclude password from response
+  });
 
   if (!user) {
     throw new ApiError(404, "User not found");

@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import Message from "../models/message.model.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -35,13 +34,6 @@ const userSchema = new mongoose.Schema(
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);
-  next();
-});
-
-// ✅ Cascade delete messages when user is deleted
-userSchema.pre("findOneAndDelete", async function (next) {
-  const user = await this.model.findOne(this.getQuery());
-  await Message.deleteMany({ senderId: user._id });
   next();
 });
 
