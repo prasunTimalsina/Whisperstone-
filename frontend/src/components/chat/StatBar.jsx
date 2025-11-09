@@ -1,9 +1,12 @@
+import { useAuthStore } from "@/store/useAuthStore";
 import { useChatStore } from "@/store/useChatStore";
 
 const StatBar = () => {
   const { chats, allUsers } = useChatStore();
+  const { onlineUsers } = useAuthStore();
   const totalMessages = chats.length;
   const totalUsers = allUsers.length;
+  const totalOnline = onlineUsers.length;
 
   return (
     <div className="px-6 py-3 flex gap-6 bg-zinc-800/50 border-t border-zinc-800">
@@ -25,7 +28,9 @@ const StatBar = () => {
         <span className="text-xs font-semibold text-zinc-400 uppercase">
           Online
         </span>
-        <span className="text-lg font-bold text-emerald-500">1</span>
+        <span className="text-lg font-bold text-emerald-500">
+          {totalOnline}
+        </span>
       </div>
     </div>
   );

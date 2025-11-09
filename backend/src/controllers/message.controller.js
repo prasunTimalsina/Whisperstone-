@@ -19,7 +19,7 @@ export const sendMessage = asyncHandler(async (req, res) => {
 });
 
 export const getMessages = asyncHandler(async (req, res) => {
-  const messages = await Message.find().populate("senderId", "fullname email");
+  const messages = await Message.find().populate("senderId", "fullname");
   res
     .status(200)
     .json(new ApiResponse(200, messages, "Messages fetched successfully"));

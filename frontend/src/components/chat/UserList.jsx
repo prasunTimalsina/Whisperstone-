@@ -1,22 +1,16 @@
 import { getInitials } from "@/lib/utils";
+import { useAuthStore } from "@/store/useAuthStore";
 import { useChatStore } from "@/store/useChatStore";
-import { all } from "axios";
+
 import { useEffect } from "react";
 
 const UserList = () => {
   const { allUsers, getAllUsers } = useChatStore();
+  const { onlineUsers } = useAuthStore();
 
   useEffect(() => {
     getAllUsers();
   }, [getAllUsers]);
-  const mockUsers = [
-    { id: 1, name: "Alex Chen", status: "online" },
-    { id: 2, name: "Jordan Smith", status: "online" },
-    { id: 3, name: "Casey Wilson", status: "away" },
-    { id: 4, name: "Morgan Davis", status: "offline" },
-    { id: 5, name: "Riley Martinez", status: "online" },
-    { id: 6, name: "Sam Taylor", status: "offline" },
-  ];
 
   return (
     <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900">
@@ -26,20 +20,22 @@ const UserList = () => {
           Active Users
         </p>
         <div className="space-y-2 mb-6">
-          {allUsers.map((user) => (
-            <button
-              key={user._id}
-              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-300 hover:bg-zinc-800 transition-colors"
-            >
-              <UserAvatar name={user.fullname} status={"online"} />
-              <div className="text-left flex-1 min-w-0">
-                <p className="text-sm font-medium text-white truncate">
-                  {user.fullname}
-                </p>
-                <p className="text-xs text-zinc-500 capitalize">Online</p>
-              </div>
-            </button>
-          ))}
+          {allUsers
+            .filter((u) => onlineUsers.includes(u._id))
+            .map((user) => (
+              <button
+                key={user._id}
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-300 hover:bg-zinc-800 transition-colors"
+              >
+                <UserAvatar name={user.fullname} status={"online"} />
+                <div className="text-left flex-1 min-w-0">
+                  <p className="text-sm font-medium text-white truncate">
+                    {user.fullname}
+                  </p>
+                  <p className="text-xs text-zinc-500 capitalize">Online</p>
+                </div>
+              </button>
+            ))}
         </div>
 
         {/* Inactive Users */}
@@ -48,7 +44,7 @@ const UserList = () => {
         </p>
         <div className="space-y-2">
           {allUsers
-            .filter((u) => u.status === "offline")
+            .filter((u) => !onlineUsers.includes(u._id))
             .map((user) => (
               <button
                 key={user._id}
