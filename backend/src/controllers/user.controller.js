@@ -1,5 +1,5 @@
 import { ENV } from "../lib/env.js";
-import Message from "../models/message.model.js";
+import Message from "../models/Message.model.js";
 import User from "../models/user.model.js";
 import { ApiError } from "../utils/api-error.js";
 import { ApiResponse } from "../utils/api-response.js";
@@ -36,9 +36,6 @@ export const updateUser = asyncHandler(async (req, res) => {
   if (fullname) updateData.fullname = fullname;
   if (email) updateData.email = email;
   if (password) updateData.password = password;
-
-  //delete chats of user
-  await Message.deleteMany({ senderId: userId });
 
   const user = await User.findByIdAndUpdate(userId, updateData, {
     new: true,

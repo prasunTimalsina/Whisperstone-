@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import Message from "./Message.model";
 
 const userSchema = new mongoose.Schema(
   {
@@ -34,6 +35,12 @@ const userSchema = new mongoose.Schema(
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);
+  next();
+});
+
+userSchema.pre("findOneAndDelete", async function (next) {
+  const user = await this.model.findOne(this.getQuery());
+  await Message.deleteMany({ senderId: user._id });
   next();
 });
 
