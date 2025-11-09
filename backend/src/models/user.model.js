@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import Message from "./Message.model";
+import Message from "./Message.model.js";
 
 const userSchema = new mongoose.Schema(
   {
