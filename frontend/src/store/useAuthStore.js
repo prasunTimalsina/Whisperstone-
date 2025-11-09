@@ -1,4 +1,5 @@
 import { axiosInstance } from "@/lib/axios";
+import toast from "react-hot-toast";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -23,9 +24,9 @@ export const useAuthStore = create(
 
       login: async (data) => {
         try {
-          console.log(data);
           const res = await axiosInstance.post("/auth/login", data);
           set({ authUser: res.data.data });
+          toast.success("Logged in successfully!");
         } catch (error) {
           console.log("Error logging in", error);
         }
@@ -36,6 +37,7 @@ export const useAuthStore = create(
           set({ isSigninUp: true });
           const res = await axiosInstance.post("/auth/signup", data);
           set({ authUser: res.data.data });
+          toast.success("Signed up successfully!");
         } catch (error) {
           console.log("Error signing up", error);
         } finally {
@@ -46,8 +48,8 @@ export const useAuthStore = create(
       logout: async () => {
         try {
           await axiosInstance.post("/auth/logout");
-          // ✅ This will clear localStorage too
           set({ authUser: null });
+          toast.success("Logged out successfully!");
         } catch (error) {
           console.log("Error logging out", error);
         }

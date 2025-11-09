@@ -1,7 +1,19 @@
+import MainChatArea from "@/components/chat/MainChatArea";
+import SidebarFooter from "@/components/chat/SidebarFooter";
+import SidebarHeader from "@/components/chat/SidebarHeader";
+import UserList from "@/components/chat/UserList";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useChatStore } from "@/store/useChatStore";
+import { useEffect } from "react";
 
 function ChatPage() {
   const { logout } = useAuthStore();
+  const { getAllUser } = useChatStore();
+
+  useEffect(() => {
+    getAllUser();
+  }, [getAllUser]);
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -11,25 +23,16 @@ function ChatPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header with logout */}
-      <header className="bg-card border-b border-border px-6 py-4">
-        <div className="flex items-center justify-between">
-          <h1 className="text-xl font-bold text-foreground">Chat Room</h1>
-          <button
-            onClick={handleLogout}
-            className="px-4 py-2 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-colors font-medium"
-          >
-            Logout
-          </button>
+    <>
+      <div className="min-h-screen bg-zinc-950 flex">
+        <div className="w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col overflow-hidden">
+          <SidebarHeader />
+          <UserList />
+          <SidebarFooter />
         </div>
-      </header>
-
-      {/* Chat content area */}
-      <div className="p-6">
-        <p className="text-muted-foreground">Chat content will go here...</p>
+        <MainChatArea />
       </div>
-    </div>
+    </>
   );
 }
 

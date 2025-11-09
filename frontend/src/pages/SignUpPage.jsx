@@ -42,12 +42,14 @@ function SignUpPage() {
       <div className="max-w-sm w-full mx-auto">
         {/* Logo */}
         <div className="mb-12">
-          <div className="flex items-center gap-2 mb-8">
-            <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center">
-              <MessageCircle className="w-4 h-4 text-zinc-950" />
+          <Link to="/">
+            <div className="flex items-center gap-2 mb-8">
+              <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center">
+                <MessageCircle className="w-4 h-4 text-zinc-950" />
+              </div>
+              <h1 className="text-xl font-bold text-white">Whisper Stone</h1>
             </div>
-            <h1 className="text-xl font-bold text-white">Whisper Stone</h1>
-          </div>
+          </Link>
           <h2 className="text-3xl font-bold text-white mb-2">
             Create your account
           </h2>
