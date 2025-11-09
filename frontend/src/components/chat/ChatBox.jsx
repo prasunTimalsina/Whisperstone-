@@ -2,78 +2,35 @@ import { formatMongoDate, getInitials } from "@/lib/utils";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useChatStore } from "@/store/useChatStore";
 import { MoreVertical } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import PageLoader from "../PageLoader";
 
 const ChatBox = () => {
-  const { chats, getAllChats } = useChatStore();
+  const { chats, getAllChats, isChatLoading } = useChatStore();
   const { authUser } = useAuthStore();
+  const chatContainerRef = useRef(null);
+
+  // ✅ Auto scroll when chats change
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [chats]);
 
   useEffect(() => {
     getAllChats();
   }, [getAllChats]);
 
-  const mockMessages = [
-    {
-      id: 1,
-      sender: "Alex Chen",
-      message: "Hey everyone! How is everyone doing?",
-      time: "10:30 AM",
-      userId: "1",
-    },
-    {
-      id: 2,
-      sender: "Jordan Smith",
-      message: "All good here! Just finished the project",
-      time: "10:32 AM",
-      userId: "2",
-    },
-    {
-      id: 3,
-      sender: "Casey Wilson",
-      message: "Great work team! Let's celebrate",
-      time: "10:35 AM",
-      userId: "3",
-    },
-    {
-      id: 4,
-      sender: "Alex Chen",
-      message: "Thanks! Next meeting is tomorrow at 2 PM",
-      time: "10:38 AM",
-      userId: "1",
-    },
-    {
-      id: 5,
-      sender: "John Doe",
-      message: "Perfect! I'll add it to the calendar",
-      time: "10:40 AM",
-      userId: "current",
-    },
-    {
-      id: 6,
-      sender: "Riley Martinez",
-      message: "Count me in!",
-      time: "10:42 AM",
-      userId: "5",
-    },
-    {
-      id: 7,
-      sender: "John Doe",
-      message: "See you all tomorrow!",
-      time: "10:44 AM",
-      userId: "current",
-    },
-  ];
+  if (isChatLoading) {
+    return <PageLoader />;
+  }
 
-  const mockUsers = [
-    { id: 1, name: "Alex Chen", status: "online" },
-    { id: 2, name: "Jordan Smith", status: "online" },
-    { id: 3, name: "Casey Wilson", status: "away" },
-    { id: 4, name: "Morgan Davis", status: "offline" },
-    { id: 5, name: "Riley Martinez", status: "online" },
-    { id: 6, name: "Sam Taylor", status: "offline" },
-  ];
   return (
-    <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-zinc-950 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 ">
+    <div
+      ref={chatContainerRef}
+      className="flex-1 overflow-y-auto p-6 space-y-4 bg-zinc-950 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 "
+    >
       {/* Chat messages will be rendered here */}
       {chats.map((msg) => {
         const isCurrentUser = msg.senderId._id === authUser._id;

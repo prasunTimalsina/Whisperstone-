@@ -30,12 +30,28 @@ export const useChatStore = create((set, get) => ({
     }
   },
 
-  sendMessage: async (messageData) => {
+  sendMessage: async (messageData, user) => {
     const { chats } = get();
+
+    const optimisticMessage = {
+      _id: `temp-${Date.now()}`,
+      senderId: {
+        _id: user._id,
+        fullname: user.fullname,
+        email: user.email,
+      },
+      text: messageData,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      __v: 0,
+    };
+
+    set({ chats: [...chats, optimisticMessage] });
+
     try {
-      const res = await axiosInstance.post("/messages", { text: messageData });
-      set({ chats: [...chats, res.data.data] });
+      await axiosInstance.post("/messages", { text: messageData });
     } catch (error) {
+      set({ chats: chats.filter((msg) => msg._id !== optimisticMessage._id) });
       console.error("Error sending message:", error);
     }
   },

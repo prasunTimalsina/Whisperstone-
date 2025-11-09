@@ -3,15 +3,17 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useChatStore } from "@/store/useChatStore";
 import { useState } from "react";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const MessageInput = () => {
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const { sendMessage } = useChatStore();
+  const { authUser } = useAuthStore();
 
   const handleSendMessage = async () => {
     setSending(true);
-    await sendMessage(message);
+    await sendMessage(message, authUser);
     setMessage("");
     setSending(false);
   };
