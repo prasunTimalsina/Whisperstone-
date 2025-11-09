@@ -8,7 +8,15 @@ A modern real-time broadcast chat application built with React, Node.js, and Soc
 
 > Experience the app in action! No installation required - just click and start chatting.
 
-![Whisper Stone Demo](./demo-video-placeholder.gif)
+## 📺 Demo Video
+
+<div align="center">
+
+https://github.com/user-attachments/assets/4377990b-3483-4541-86d2-f17ac20c7189
+
+_🎥 Watch Wishper Stone in action
+
+</div>
 
 <!-- Replace with actual demo video -->
 
