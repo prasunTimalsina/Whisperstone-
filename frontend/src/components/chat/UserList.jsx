@@ -6,11 +6,26 @@ import { useEffect } from "react";
 
 const UserList = () => {
   const { allUsers, getAllUsers } = useChatStore();
-  const { onlineUsers } = useAuthStore();
+  const { onlineUsers, socket } = useAuthStore();
 
   useEffect(() => {
     getAllUsers();
   }, [getAllUsers]);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    // Listen for new users joining
+    socket.on("userJoined", (newUser) => {
+      useChatStore.setState((state) => ({
+        allUsers: [...state.allUsers, newUser],
+      }));
+    });
+
+    return () => {
+      socket.off("userJoined");
+    };
+  }, [socket]);
 
   return (
     <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900">

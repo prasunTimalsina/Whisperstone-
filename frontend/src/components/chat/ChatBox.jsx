@@ -6,7 +6,13 @@ import { useEffect, useRef } from "react";
 import PageLoader from "../PageLoader";
 
 const ChatBox = () => {
-  const { chats, getAllChats, isChatLoading } = useChatStore();
+  const {
+    chats,
+    getAllChats,
+    isChatLoading,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  } = useChatStore();
   const { authUser } = useAuthStore();
   const chatContainerRef = useRef(null);
 
@@ -20,7 +26,11 @@ const ChatBox = () => {
 
   useEffect(() => {
     getAllChats();
-  }, [getAllChats]);
+    subscribeToMessages();
+    return () => {
+      unsubscribeFromMessages();
+    };
+  }, [getAllChats, subscribeToMessages, unsubscribeFromMessages]);
 
   if (isChatLoading) {
     return <PageLoader />;

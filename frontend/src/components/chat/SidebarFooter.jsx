@@ -1,12 +1,22 @@
 import { getInitials } from "@/lib/utils";
 import { useAuthStore } from "@/store/useAuthStore";
-import { ChevronDown, LogOut, User } from "lucide-react";
+import { ChevronDown, Delete, LogOut, User } from "lucide-react";
 import { useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const SidebarFooter = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-
-  const { authUser, logout } = useAuthStore();
+  const { authUser, logout, deleteAccount } = useAuthStore();
 
   const handleLogout = async () => {
     // Implement logout functionality here
@@ -14,6 +24,14 @@ const SidebarFooter = () => {
       await logout();
     } catch (error) {
       console.error("Logout failed:", error);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteAccount();
+    } catch (error) {
+      console.error("Delete account failed:", error);
     }
   };
 
@@ -35,13 +53,35 @@ const SidebarFooter = () => {
 
       {showProfileMenu && (
         <div className="absolute bottom-20 left-4 right-4 bg-zinc-800 border border-zinc-700 rounded-lg shadow-lg z-50">
-          <a
-            href="/profile"
-            className="flex items-center gap-3 px-4 py-3 text-sm text-white hover:bg-zinc-700 rounded-t-lg transition-colors"
-          >
-            <User className="w-4 h-4" />
-            View Profile
-          </a>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-500 hover:bg-zinc-700 rounded-t-lg transition-colors">
+                <Delete className="w-4 h-4" />
+                Delete Account
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="bg-zinc-900 border-zinc-700 text-white">
+              <AlertDialogHeader>
+                <AlertDialogTitle className="text-white">
+                  Are you absolutely sure?
+                </AlertDialogTitle>
+                <AlertDialogDescription className="text-zinc-400">
+                  This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel className="bg-zinc-800 border-zinc-600 text-white hover:bg-zinc-700">
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDeleteAccount}
+                  className="bg-red-600 text-white hover:bg-red-700 focus:ring-red-500"
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           <button
             onClick={handleLogout}
             className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-400 hover:bg-zinc-700 rounded-b-lg transition-colors"

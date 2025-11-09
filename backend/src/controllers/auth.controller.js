@@ -5,6 +5,7 @@ import { ApiError } from "../utils/api-error.js";
 import { ApiResponse } from "../utils/api-response.js";
 import { asyncHandler } from "../utils/async-handler.js";
 import { generateToken } from "../utils/generateToken.js";
+import { io } from "../lib/socket.js";
 
 export const signup = asyncHandler(async (req, res) => {
   const { fullname, email, password } = req.body;
@@ -26,6 +27,12 @@ export const signup = asyncHandler(async (req, res) => {
       secure: ENV.NODE_ENV === "production",
       sameSite: "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    io.emit("userJoined", {
+      _id: savedUser._id,
+      fullname: savedUser.fullname,
+      email: savedUser.email,
     });
 
     res.status(201).json(

@@ -5,7 +5,7 @@ const StatBar = () => {
   const { chats, allUsers } = useChatStore();
   const { onlineUsers } = useAuthStore();
   const totalMessages = chats.length;
-  const totalUsers = allUsers.length;
+  const totalUsers = allUsers.length + 1;
   const totalOnline = onlineUsers.length;
 
   return (

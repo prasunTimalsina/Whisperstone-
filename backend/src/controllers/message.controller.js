@@ -1,6 +1,7 @@
 import Message from "../models/Message.model.js";
 import { ApiResponse } from "../utils/api-response.js";
 import { asyncHandler } from "../utils/async-handler.js";
+import { io } from "../lib/socket.js";
 
 export const sendMessage = asyncHandler(async (req, res) => {
   const senderId = req.user._id;
@@ -13,6 +14,10 @@ export const sendMessage = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Failed to send message");
   }
   await newMessage.save();
+
+  const populatedMessage = await newMessage.populate("senderId", "fullname");
+  //real time via socket.io
+  io.emit("newMessage", populatedMessage);
   res
     .status(201)
     .json(new ApiResponse(201, newMessage, "Message Created Sucessfuly"));
