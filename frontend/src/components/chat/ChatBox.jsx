@@ -111,7 +111,7 @@ const ChatBox = () => {
                 </p>
               </div>
               <div className="mt-1 bg-zinc-800 text-zinc-100 rounded-lg px-4 py-2 inline-block">
-                <p className="text-sm">{msg.message}</p>
+                <p className="text-sm">{msg.text}</p>
               </div>
             </div>
             <button className="opacity-0 group-hover:opacity-100 p-1.5 rounded hover:bg-zinc-800 transition-all text-zinc-500">
